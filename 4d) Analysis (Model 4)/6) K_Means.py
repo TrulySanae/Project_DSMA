@@ -11,7 +11,7 @@ import os
 import shutil
 
 # Specify the name or path of the folder you want to create
-folder_name = '1b) K_Means_Results'
+folder_name = '6b) K_Means_Results'
 
 # Remove the folder if it exists and create a new one
 if os.path.exists(folder_name):
