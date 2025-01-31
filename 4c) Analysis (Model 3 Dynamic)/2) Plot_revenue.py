@@ -139,8 +139,25 @@ def update_revenue(*inputs):
     barplot_fig = px.bar(revenue_df, x='Day of the Week', y='Predicted Revenue',
                          title='Predicted Revenue for Each Day',
                          text_auto='.2s')
-    barplot_fig.update_layout(yaxis_title='Revenue (€)', xaxis_title='Day',
-                               title_font_size=20, template='simple_white')
+    barplot_fig.update_layout(
+        yaxis_title='Revenue (€)',
+        xaxis_title='',
+        title_font_size=20,
+        template='simple_white',
+        yaxis=dict(
+            zeroline=True,
+            zerolinewidth=2,
+            zerolinecolor='black',
+            range=[min(0, revenue_predictions.min()), revenue_predictions.max()]
+        ),
+        xaxis=dict(
+            showline=False,  # Removes extra x-axis line
+            showgrid=False,  # Hides grid on x-axis
+            tickmode='array',  # Ensures category names are aligned with bars
+            tickvals=list(range(len(revenue_df["Day of the Week"]))),  # Positions labels at bars
+            ticktext=revenue_df["Day of the Week"]  # Ensures correct labels
+        )
+    )
 
     weekday_revenue = revenue_predictions[:5]
     weekend_revenue = revenue_predictions[5:]
@@ -151,8 +168,24 @@ def update_revenue(*inputs):
 
     boxplot_fig = px.box(boxplot_df, x='Type', y='Revenue', title='Weekday vs Weekend Revenue',
                          points='all', template='simple_white')
-    boxplot_fig.update_layout(yaxis_title='Revenue (€)', xaxis_title='Time Period',
-                               title_font_size=20)
+    boxplot_fig.update_layout(
+        yaxis_title='Revenue (€)',
+        xaxis_title='',
+        title_font_size=20,
+        template='simple_white',
+        yaxis=dict(
+            zeroline=True,
+            zerolinewidth=1,
+            zerolinecolor='black'
+        ),
+        xaxis=dict(
+            showline=False,  # Removes extra x-axis line
+            showgrid=False,  # Hides grid on x-axis
+            tickmode='array',  # Ensures category names are aligned
+            tickvals=[0, 1],  # Positions labels at correct spots
+            ticktext=['Weekday', 'Weekend']  # Ensures correct labels
+        )
+    )
 
     # Calculate total weekly revenue
     total_revenue = np.sum(revenue_predictions)
